@@ -111,6 +111,33 @@ export default function Index() {
 
   return (
     <div className="min-h-screen font-golos bg-white">
+
+      {/* НАВИГАЦИЯ */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div className="max-w-4xl mx-auto px-4 overflow-x-auto">
+          <div className="flex items-center gap-1 py-3 min-w-max">
+            {[
+              { label: "Почему не хочет", href: "#section1" },
+              { label: "3 признака", href: "#section2" },
+              { label: "Диагностика", href: "#section3" },
+              { label: "Стратегии", href: "#section4" },
+              { label: "Чек-лист", href: "#section5" },
+              { label: "Мультфильмы", href: "#section6" },
+              { label: "Баранкин", href: "#section7" },
+              { label: "Красные флаги", href: "#section8" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-gray-600 hover:text-orange-500 px-3 py-1.5 rounded-lg hover:bg-orange-50 transition-colors whitespace-nowrap"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
       {/* HERO */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B35] via-[#F7931E] to-[#FFD23F]" />
@@ -142,7 +169,7 @@ export default function Index() {
       </header>
 
       {/* SECTION 1 — Почему */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
+      <section id="section1" className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-oswald font-bold">1</div>
           <h2 className="font-oswald text-3xl md:text-4xl font-bold text-gray-900">
@@ -160,14 +187,20 @@ export default function Index() {
           <div className="bg-gradient-to-r from-orange-400 to-yellow-400 px-6 py-4">
             <p className="text-white font-semibold">🎬 Мультфильм «Зелёная пилюля» — фрагмент 2 минуты</p>
           </div>
-          <div className="aspect-video bg-gray-900 flex items-center justify-center">
-            <iframe
-              src="https://www.youtube.com/embed/F2DnNJgkiKg"
-              className="w-full h-full"
-              allowFullScreen
-              title="Зелёная пилюля"
-            />
-          </div>
+          <a
+            href="https://yandex.ru/video/preview/14581553249314319943"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden"
+          >
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+              <div className="w-20 h-20 rounded-full bg-white/20 border-4 border-white/60 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all duration-300">
+                <span className="text-white text-4xl ml-1">▶</span>
+              </div>
+              <p className="text-white/80 text-sm font-medium">Смотреть на Яндекс.Видео</p>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </a>
         </div>
 
         <details className="group bg-white border-2 border-orange-200 rounded-2xl overflow-hidden">
@@ -187,7 +220,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 2 — Три признака */}
-      <section className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16">
+      <section id="section2" className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-oswald font-bold">2</div>
@@ -246,7 +279,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 3 — Диагностика */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
+      <section id="section3" className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center text-white font-oswald font-bold">3</div>
           <h2 className="font-oswald text-3xl md:text-4xl font-bold text-gray-900">
@@ -286,7 +319,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 4 — Стратегии */}
-      <section className="bg-gradient-to-br from-violet-50 to-indigo-50 py-16">
+      <section id="section4" className="bg-gradient-to-br from-violet-50 to-indigo-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-3 mb-10">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-oswald font-bold">4</div>
@@ -326,7 +359,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 5 — Чек-лист */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
+      <section id="section5" className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white font-oswald font-bold">5</div>
           <h2 className="font-oswald text-3xl md:text-4xl font-bold text-gray-900">
@@ -379,7 +412,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 6 — Плейлист */}
-      <section className="bg-gray-950 py-16">
+      <section id="section6" className="bg-gray-950 py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-oswald font-bold">6</div>
@@ -419,7 +452,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 7 — Баранкин */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
+      <section id="section7" className="max-w-4xl mx-auto px-6 py-16">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white font-oswald font-bold">7</div>
           <h2 className="font-oswald text-3xl md:text-4xl font-bold text-gray-900">
@@ -461,7 +494,7 @@ export default function Index() {
       </section>
 
       {/* SECTION 8 — Красные флаги */}
-      <section className="bg-gradient-to-br from-red-50 to-orange-50 py-16">
+      <section id="section8" className="bg-gradient-to-br from-red-50 to-orange-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white font-oswald font-bold">8</div>
