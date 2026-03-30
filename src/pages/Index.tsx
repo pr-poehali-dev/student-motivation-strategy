@@ -129,22 +129,10 @@ export default function Index() {
             <span className="text-white font-bold">как вернуть желание учиться</span>
           </p>
 
-          {/* Video placeholder */}
-          <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl p-6 max-w-2xl mx-auto text-left">
-            <div className="flex items-start gap-4">
-              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-2xl flex-shrink-0">
-                🎬
-              </div>
-              <div>
-                <p className="text-white font-semibold text-lg mb-2">Видео-приветствие (2 минуты)</p>
-                <p className="text-white/80 text-sm leading-relaxed">
-                  «Здравствуйте! Если ваш ребёнок говорит "не хочу в школу" — вы не одни. Давайте разберёмся, что происходит и что делать. Всё, что нужно, собрано на этой странице»
-                </p>
-                <div className="mt-3 bg-white/20 rounded-xl p-4 text-center text-white/70 text-sm border border-white/20">
-                  ▶ Вставьте ссылку на ваше видео
-                </div>
-              </div>
-            </div>
+          <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl px-8 py-6 max-w-2xl mx-auto">
+            <p className="text-white/90 text-lg leading-relaxed">
+              Если ваш ребёнок говорит «не хочу в школу» — вы не одни. Давайте разберёмся, что происходит и что делать. Всё, что нужно, собрано на этой странице.
+            </p>
           </div>
         </div>
 
