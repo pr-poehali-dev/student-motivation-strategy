@@ -7,7 +7,7 @@ const films = [
     problem: "«Не хочу! Надоело!»",
     title: "В стране невыученных уроков",
     duration: "3 мин",
-    videoId: "F2DnNJgkiKg",
+    videoUrl: "https://yandex.ru/video/preview/3196128270546991426",
     questions: [
       "Почему Витя не хотел учиться?",
       "Что случилось из‑за его незнания?",
@@ -23,7 +23,7 @@ const films = [
     problem: "«И так сойдёт!»",
     title: "Вовка в Тридевятом царстве",
     duration: "3 мин",
-    videoId: "7eGT_bXFGbA",
+    videoUrl: "https://yandex.ru/video/preview/11496731049295764739",
     questions: [
       "Что Вовка хотел получить без труда?",
       "Почему у Вовки ничего не получалось?",
@@ -39,7 +39,7 @@ const films = [
     problem: "«Боюсь ошибки»",
     title: "История с единицей",
     duration: "2 мин",
-    videoId: "5DnPVmNQoOA",
+    videoUrl: "https://yandex.ru/video/preview/9872089415251568780",
     questions: [
       "Почему единица стала преследовать героя?",
       "Что помогло избавиться от страха?",
@@ -100,7 +100,6 @@ const playlist = [
 const days = ["ПН", "ВТ", "СР", "ЧТ", "ПТ"];
 
 export default function Index() {
-  const [openFilm, setOpenFilm] = useState<number | null>(null);
   const [openStrategy, setOpenStrategy] = useState<number | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [activePlaylist, setActivePlaylist] = useState(0);
@@ -242,23 +241,14 @@ export default function Index() {
                 </div>
 
                 <div className="p-4">
-                  <button
-                    onClick={() => setOpenFilm(openFilm === film.id ? null : film.id)}
+                  <a
+                    href={film.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`w-full bg-gradient-to-r ${film.color} text-white rounded-xl py-2.5 px-4 font-semibold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
                   >
                     ▶ Смотреть фрагмент ({film.duration})
-                  </button>
-
-                  {openFilm === film.id && (
-                    <div className="mt-4 rounded-xl overflow-hidden aspect-video">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${film.videoId}`}
-                        className="w-full h-full"
-                        allowFullScreen
-                        title={film.title}
-                      />
-                    </div>
-                  )}
+                  </a>
 
                   <div className="mt-4">
                     <p className="font-semibold text-gray-700 text-sm mb-2">Вопросы для обсуждения:</p>
