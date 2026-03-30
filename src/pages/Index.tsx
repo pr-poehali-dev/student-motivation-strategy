@@ -90,11 +90,11 @@ const strategies = [
 ];
 
 const playlist = [
-  { title: "Зелёная пилюля", duration: "10 мин", videoId: "F2DnNJgkiKg" },
-  { title: "В стране невыученных уроков", duration: "20 мин", videoId: "F2DnNJgkiKg" },
-  { title: "Вовка в Тридевятом царстве", duration: "15 мин", videoId: "7eGT_bXFGbA" },
-  { title: "История с единицей", duration: "9 мин", videoId: "5DnPVmNQoOA" },
-  { title: "Баранкин, будь человеком!", duration: "21 мин", videoId: "k5o1JHHcHVs" },
+  { title: "Зелёная пилюля", duration: "10 мин", emoji: "💊", videoUrl: "https://yandex.ru/video/preview/14581553249314319943" },
+  { title: "В стране невыученных уроков", duration: "20 мин", emoji: "📚", videoUrl: "https://yandex.ru/video/preview/3196128270546991426" },
+  { title: "Вовка в Тридевятом царстве", duration: "15 мин", emoji: "👑", videoUrl: "https://yandex.ru/video/preview/11496731049295764739" },
+  { title: "История с единицей", duration: "9 мин", emoji: "✏️", videoUrl: "https://yandex.ru/video/preview/9872089415251568780" },
+  { title: "Баранкин, будь человеком!", duration: "21 мин", emoji: "🐦", videoUrl: "https://yandex.ru/video/preview/8536890593982645653" },
 ];
 
 const days = ["ПН", "ВТ", "СР", "ЧТ", "ПТ"];
@@ -192,7 +192,7 @@ const quizZones = [
 export default function Index() {
   const [openStrategy, setOpenStrategy] = useState<number | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [activePlaylist, setActivePlaylist] = useState(0);
+
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
@@ -584,33 +584,28 @@ export default function Index() {
               Все мультфильмы целиком
             </h2>
           </div>
-          <p className="text-gray-400 mb-8 text-lg">Если хотите посмотреть мультфильмы полностью — вот плейлист.</p>
+          <p className="text-gray-400 mb-8 text-lg">Советские мультфильмы на Яндекс.Видео — смотрите целиком всей семьёй.</p>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <div className="md:col-span-2 rounded-2xl overflow-hidden aspect-video">
-              <iframe
-                src={`https://www.youtube.com/embed/${playlist[activePlaylist].videoId}`}
-                className="w-full h-full"
-                allowFullScreen
-                title={playlist[activePlaylist].title}
-              />
-            </div>
-            <div className="space-y-2">
-              {playlist.map((film, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActivePlaylist(i)}
-                  className={`w-full text-left px-4 py-3 rounded-xl transition-all text-sm ${
-                    activePlaylist === i
-                      ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold"
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                  }`}
-                >
-                  <span className="block font-medium">{film.title}</span>
-                  <span className={`text-xs ${activePlaylist === i ? "text-white/80" : "text-gray-500"}`}>{film.duration}</span>
-                </button>
-              ))}
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {playlist.map((film, i) => (
+              <a
+                key={i}
+                href={film.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-yellow-500 rounded-2xl p-5 flex flex-col gap-3 transition-all duration-200"
+              >
+                <div className="text-4xl">{film.emoji}</div>
+                <div className="flex-1">
+                  <p className="font-semibold text-white group-hover:text-yellow-400 transition-colors leading-snug">{film.title}</p>
+                  <p className="text-gray-500 text-sm mt-1">{film.duration}</p>
+                </div>
+                <div className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
+                  <span>▶</span>
+                  <span>Смотреть на Яндекс.Видео</span>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -628,14 +623,20 @@ export default function Index() {
           <p className="text-gray-700 text-lg mb-4">
             Это <strong>главный мультфильм про школьную мотивацию.</strong> Посмотрите его всей семьёй.
           </p>
-          <div className="rounded-xl overflow-hidden aspect-video mb-6">
-            <iframe
-              src="https://www.youtube.com/embed/k5o1JHHcHVs"
-              className="w-full h-full"
-              allowFullScreen
-              title="Баранкин, будь человеком!"
-            />
-          </div>
+          <a
+            href="https://yandex.ru/video/preview/8536890593982645653"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-xl overflow-hidden aspect-video bg-gradient-to-br from-emerald-900 to-cyan-900 relative mb-6"
+          >
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+              <div className="w-20 h-20 rounded-full bg-white/20 border-4 border-white/60 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all duration-300">
+                <span className="text-white text-4xl ml-1">▶</span>
+              </div>
+              <p className="text-white/80 text-sm font-medium">Смотреть на Яндекс.Видео · 21 мин</p>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </a>
           <div className="bg-white border border-emerald-100 rounded-xl p-4 mb-4">
             <p className="text-emerald-600 font-semibold italic text-center text-lg">
               «Быть человеком — это трудно, но интересно»
@@ -684,15 +685,21 @@ export default function Index() {
             </ul>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-white border-2 border-orange-100 rounded-xl p-5">
-              <p className="font-bold text-gray-800 mb-2">🏫 Школьный психолог</p>
-              <p className="text-gray-500 text-sm italic">[Вписать контакты]</p>
-            </div>
-            <div className="bg-white border-2 border-orange-100 rounded-xl p-5">
-              <p className="font-bold text-gray-800 mb-2">👩‍🏫 Классный руководитель</p>
-              <p className="text-gray-500 text-sm italic">[Вписать контакты]</p>
-            </div>
+          <div className="bg-white border-2 border-orange-100 rounded-xl p-6">
+            <p className="font-bold text-gray-800 mb-3">💬 Как говорить с ребёнком, если вы заметили красный флаг:</p>
+            <ul className="space-y-2">
+              {[
+                "Не задавайте вопрос «почему ты не хочешь в школу?» — он вызывает защиту",
+                "Скажите: «Я вижу, тебе сейчас тяжело. Я рядом»",
+                "Не сравнивайте с другими детьми и не обесценивайте переживания",
+                "Обратитесь к школьному психологу — это нормальный и правильный шаг",
+              ].map((tip, i) => (
+                <li key={i} className="flex gap-3 items-start text-gray-700 text-sm">
+                  <span className="text-orange-400 flex-shrink-0 mt-0.5">→</span>
+                  {tip}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -703,19 +710,24 @@ export default function Index() {
           «Быть человеком — это трудно, но интересно»
         </blockquote>
 
-        <a
-          href="#"
-          className="inline-flex items-center gap-2 bg-white text-orange-600 font-bold px-8 py-4 rounded-xl text-lg hover:bg-orange-50 transition-colors mb-8"
-        >
-          📦 Скачать все материалы одним PDF
-        </a>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+          <a
+            href="#section3"
+            className="inline-flex items-center gap-2 bg-white text-orange-600 font-bold px-8 py-4 rounded-xl text-lg hover:bg-orange-50 transition-colors"
+          >
+            📋 Пройти диагностику снова
+          </a>
+          <a
+            href="#section4"
+            className="inline-flex items-center gap-2 bg-white/20 border-2 border-white/40 text-white font-bold px-8 py-4 rounded-xl text-lg hover:bg-white/30 transition-colors"
+          >
+            💡 5 стратегий для родителей
+          </a>
+        </div>
 
-        <div className="border-t border-white/30 pt-6 mt-4">
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 max-w-sm mx-auto mb-4">
-            <p className="text-white/80 text-sm">🏫 Контакты школы</p>
-            <p className="text-white/60 text-xs italic mt-1">[Вписать контакты]</p>
-          </div>
-          <p className="text-white/60 text-sm">Обновлено: март 2026</p>
+        <div className="border-t border-white/30 pt-6">
+          <p className="text-white/70 text-base mb-1">Помните: ваше спокойствие — лучшая поддержка для ребёнка.</p>
+          <p className="text-white/50 text-sm">Обновлено: март 2026</p>
         </div>
       </footer>
     </div>
