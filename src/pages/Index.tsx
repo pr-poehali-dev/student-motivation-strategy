@@ -97,7 +97,7 @@ const playlist = [
   { title: "Баранкин, будь человеком!", duration: "21 мин", emoji: "🐦", videoUrl: "https://yandex.ru/video/preview/8536890593982645653" },
 ];
 
-const days = ["ПН", "ВТ", "СР", "ЧТ", "ПТ"];
+
 
 const quizQuestions = [
   {
@@ -524,55 +524,69 @@ export default function Index() {
 
       {/* SECTION 5 — Чек-лист */}
       <section id="section5" className="max-w-4xl mx-auto px-6 py-16">
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white font-oswald font-bold">5</div>
           <h2 className="font-oswald text-3xl md:text-4xl font-bold text-gray-900">
-            Чек-лист для ребёнка на неделю
+            Чек-лист для родителей
           </h2>
         </div>
+        <p className="text-gray-600 text-lg mb-8">Отметьте, что вы уже делаете. Чем больше галочек — тем лучше почва для мотивации.</p>
 
-        <div className="bg-gradient-to-br from-pink-50 to-rose-50 border-2 border-pink-100 rounded-2xl p-6 md:p-8 mb-6">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="text-left py-3 px-4 font-oswald text-gray-500 font-semibold text-sm">День</th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-700 text-sm">Я спросил «почему?»</th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-700 text-sm">Я сделал, что не хотелось</th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-700 text-sm">Школа — не враг</th>
-                </tr>
-              </thead>
-              <tbody>
-                {days.map((day) => (
-                  <tr key={day} className="border-t border-pink-100">
-                    <td className="py-3 px-4 font-oswald font-bold text-gray-800">{day}</td>
-                    {[0, 1, 2].map((col) => (
-                      <td key={col} className="py-3 px-4 text-center">
-                        <button
-                          onClick={() => toggleCheck(`${day}-${col}`)}
-                          className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center mx-auto transition-all ${
-                            checked[`${day}-${col}`]
-                              ? "bg-gradient-to-br from-pink-400 to-rose-500 border-pink-400 text-white"
-                              : "border-pink-300 hover:border-pink-400"
-                          }`}
-                        >
-                          {checked[`${day}-${col}`] && "✓"}
-                        </button>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className="space-y-3">
+          {[
+            { text: "Я спрашиваю «что сегодня было интересного?» вместо «какие оценки?»", category: "Общение" },
+            { text: "Я не сравниваю ребёнка с другими детьми", category: "Общение" },
+            { text: "После школы у ребёнка есть 1,5–2 часа свободного времени без заданий", category: "Режим" },
+            { text: "Я даю ребёнку выбор: «Что сделаем первым — русский или математику?»", category: "Автономия" },
+            { text: "Когда ребёнок ошибся, я говорю «давай разберёмся» вместо «опять ошибся»", category: "Ошибки" },
+            { text: "Я замечаю и называю конкретные успехи, а не только промахи", category: "Поддержка" },
+            { text: "Я сам(а) рассказываю ребёнку о том, что мне интересно узнавать", category: "Пример" },
+            { text: "Я стараюсь оставаться спокойным(ой) во время уроков, не кричу", category: "Атмосфера" },
+          ].map((item, i) => (
+            <button
+              key={i}
+              onClick={() => toggleCheck(`p-${i}`)}
+              className={`w-full text-left flex items-center gap-4 px-5 py-4 rounded-2xl border-2 transition-all duration-150 ${
+                checked[`p-${i}`]
+                  ? "border-pink-400 bg-pink-50"
+                  : "border-gray-100 bg-white hover:border-pink-200 hover:bg-pink-50/40"
+              }`}
+            >
+              <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                checked[`p-${i}`]
+                  ? "bg-gradient-to-br from-pink-400 to-rose-500 border-pink-400 text-white"
+                  : "border-gray-300"
+              }`}>
+                {checked[`p-${i}`] && <span className="text-xs font-bold">✓</span>}
+              </div>
+              <div className="flex-1">
+                <p className={`text-sm font-medium leading-snug ${checked[`p-${i}`] ? "text-pink-800" : "text-gray-700"}`}>{item.text}</p>
+              </div>
+              <span className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${checked[`p-${i}`] ? "bg-pink-200 text-pink-700" : "bg-gray-100 text-gray-400"}`}>{item.category}</span>
+            </button>
+          ))}
         </div>
 
-        <a
-          href="#"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity"
-        >
-          📄 Скачать чек-лист для печати (PDF)
-        </a>
+        {Object.values(checked).filter(Boolean).length > 0 && (
+          <div className="mt-6 bg-gradient-to-r from-pink-50 to-rose-50 border-2 border-pink-100 rounded-2xl px-6 py-4 flex items-center gap-4">
+            <div className="text-3xl">
+              {Object.keys(checked).filter(k => k.startsWith("p-") && checked[k]).length >= 6 ? "🌟" :
+               Object.keys(checked).filter(k => k.startsWith("p-") && checked[k]).length >= 3 ? "💪" : "🌱"}
+            </div>
+            <div>
+              <p className="font-bold text-pink-800">
+                {Object.keys(checked).filter(k => k.startsWith("p-") && checked[k]).length} из 8 пунктов
+              </p>
+              <p className="text-pink-600 text-sm">
+                {Object.keys(checked).filter(k => k.startsWith("p-") && checked[k]).length >= 6
+                  ? "Отличная атмосфера — продолжайте в том же духе!"
+                  : Object.keys(checked).filter(k => k.startsWith("p-") && checked[k]).length >= 3
+                  ? "Хороший старт. Добавьте ещё пару пунктов — и будет заметный результат"
+                  : "Начало положено. Попробуйте добавить по одному пункту в неделю"}
+              </p>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* SECTION 6 — Плейлист */}
