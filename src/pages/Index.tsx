@@ -99,10 +99,116 @@ const playlist = [
 
 const days = ["ПН", "ВТ", "СР", "ЧТ", "ПТ"];
 
+const quizQuestions = [
+  {
+    question: "Как ребёнок реагирует на слово «школа» по утрам?",
+    answers: [
+      { text: "Встаёт без проблем, в целом спокойно", score: 0 },
+      { text: "Иногда ворчит, но идёт", score: 1 },
+      { text: "Часто жалуется на живот/голову, ищет повод остаться дома", score: 2 },
+      { text: "Устраивает истерики, категорически отказывается", score: 3 },
+    ],
+  },
+  {
+    question: "Как ребёнок относится к домашним заданиям?",
+    answers: [
+      { text: "Садится сам или с небольшим напоминанием", score: 0 },
+      { text: "Нужно несколько раз напомнить, но делает", score: 1 },
+      { text: "Каждый раз конфликт, плачет или тянет до ночи", score: 2 },
+      { text: "Отказывается, задания остаются невыполненными", score: 3 },
+    ],
+  },
+  {
+    question: "Рассказывает ли ребёнок о том, что было в школе?",
+    answers: [
+      { text: "Да, охотно делится, что понравилось", score: 0 },
+      { text: "Иногда, если спросить прямой вопрос", score: 1 },
+      { text: "Редко, чаще отмахивается «всё нормально»", score: 2 },
+      { text: "Никогда, закрывается или говорит только плохое", score: 3 },
+    ],
+  },
+  {
+    question: "Есть ли у ребёнка друзья в классе или интерес к одноклассникам?",
+    answers: [
+      { text: "Да, есть приятели, говорит о них", score: 0 },
+      { text: "Есть один-два человека, общается немного", score: 1 },
+      { text: "Почти не общается, предпочитает быть один", score: 2 },
+      { text: "Говорит, что его не любят / обижают", score: 3 },
+    ],
+  },
+  {
+    question: "Как ребёнок воспринимает ошибки в учёбе?",
+    answers: [
+      { text: "Спокойно, пробует исправить", score: 0 },
+      { text: "Расстраивается, но быстро успокаивается", score: 1 },
+      { text: "Долго переживает, боится снова ошибиться", score: 2 },
+      { text: "Отказывается пробовать, чтобы не ошибиться", score: 3 },
+    ],
+  },
+  {
+    question: "Замечаете ли вы у ребёнка интерес к чему-то, связанному с познанием?",
+    answers: [
+      { text: "Да, задаёт много вопросов «почему» и «как»", score: 0 },
+      { text: "Иногда интересуется, если тема нравится", score: 1 },
+      { text: "Редко, в основном только игры / мультики", score: 2 },
+      { text: "Не проявляет интереса ни к чему познавательному", score: 3 },
+    ],
+  },
+];
+
+const quizZones = [
+  {
+    min: 0,
+    max: 5,
+    zone: "🟢 Зелёная зона",
+    title: "Мотивация в порядке",
+    description: "Ребёнок в целом позитивно воспринимает учёбу. Небольшие капризы — норма адаптации первоклассника. Главное — поддерживать атмосферу безопасности и интереса.",
+    advice: ["Продолжайте задавать вопросы о школе с интересом, а не с тревогой", "Отмечайте успехи, даже маленькие", "Читайте вместе и играйте в познавательные игры"],
+    bg: "from-green-400 to-teal-500",
+    light: "bg-green-50 border-green-200 text-green-800",
+  },
+  {
+    min: 6,
+    max: 11,
+    zone: "🟡 Жёлтая зона",
+    title: "Есть признаки снижения мотивации",
+    description: "Ребёнок ещё справляется, но уже чувствует напряжение. Самое время скорректировать подход — пока ситуация не стала критической.",
+    advice: ["Смените фокус с оценок на сам процесс познания", "Дайте больше свободного времени — минимум 1,5 часа игры после школы", "Используйте стратегии из раздела 4 этой страницы"],
+    bg: "from-yellow-400 to-orange-400",
+    light: "bg-yellow-50 border-yellow-200 text-yellow-800",
+  },
+  {
+    min: 12,
+    max: 18,
+    zone: "🔴 Красная зона",
+    title: "Мотивация значительно снижена",
+    description: "Ребёнок переживает серьёзные трудности с учёбой или общением. Ситуация требует внимания — чем раньше, тем лучше.",
+    advice: ["Обратитесь к школьному психологу для очной консультации", "Снизьте нагрузку: временно откажитесь от дополнительных кружков", "Не давите на оценки — восстановите доверие и безопасность дома"],
+    bg: "from-red-400 to-rose-500",
+    light: "bg-red-50 border-red-200 text-red-800",
+  },
+];
+
 export default function Index() {
   const [openStrategy, setOpenStrategy] = useState<number | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [activePlaylist, setActivePlaylist] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+
+  const quizScore = Object.values(quizAnswers).reduce((a, b) => a + b, 0);
+  const quizAnsweredCount = Object.keys(quizAnswers).length;
+  const quizResult = quizZones.find((z) => quizScore >= z.min && quizScore <= z.max);
+
+  const handleQuizSelect = (qIdx: number, score: number) => {
+    if (quizSubmitted) return;
+    setQuizAnswers((prev) => ({ ...prev, [qIdx]: score }));
+  };
+
+  const handleQuizReset = () => {
+    setQuizAnswers({});
+    setQuizSubmitted(false);
+  };
 
   const toggleCheck = (key: string) => {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -278,34 +384,102 @@ export default function Index() {
         </div>
 
         <p className="text-gray-600 text-lg mb-8">
-          Пройдите короткий опрос, чтобы понять уровень мотивации вашего ребёнка прямо сейчас.
+          Ответьте честно на 6 вопросов — и узнаете, в какой зоне сейчас ваш ребёнок.
         </p>
 
-        <div className="bg-gradient-to-br from-green-400 to-teal-500 rounded-2xl p-8 text-white text-center mb-8">
-          <div className="text-5xl mb-4">📋</div>
-          <p className="text-xl font-semibold mb-6">5 вопросов — готово за 2 минуты</p>
-          <a
-            href="#"
-            className="inline-block bg-white text-teal-600 font-bold px-8 py-4 rounded-xl text-lg hover:bg-teal-50 transition-colors"
-          >
-            Пройти диагностику →
-          </a>
-          <p className="text-white/70 text-sm mt-3">Вставьте ссылку на Google Forms</p>
-        </div>
+        {!quizSubmitted ? (
+          <div className="space-y-6">
+            {quizQuestions.map((q, qIdx) => (
+              <div key={qIdx} className="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-sm">
+                <p className="font-semibold text-gray-800 mb-4 text-base">
+                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-teal-500 text-white text-xs font-bold mr-2">{qIdx + 1}</span>
+                  {q.question}
+                </p>
+                <div className="space-y-2">
+                  {q.answers.map((a, aIdx) => {
+                    const selected = quizAnswers[qIdx] === a.score;
+                    return (
+                      <button
+                        key={aIdx}
+                        onClick={() => handleQuizSelect(qIdx, a.score)}
+                        className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-150 ${
+                          selected
+                            ? "border-teal-500 bg-teal-50 text-teal-800"
+                            : "border-gray-100 bg-gray-50 text-gray-700 hover:border-teal-300 hover:bg-teal-50/50"
+                        }`}
+                      >
+                        <span className={`inline-block w-4 h-4 rounded-full border-2 mr-3 flex-shrink-0 align-middle transition-all ${selected ? "border-teal-500 bg-teal-500" : "border-gray-300"}`} />
+                        {a.text}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
 
-        <div className="grid md:grid-cols-3 gap-4">
-          {[
-            { zone: "🟢 Зелёная зона", meaning: "Мотивация в порядке", action: "Поддерживайте текущий стиль общения", bg: "bg-green-50 border-green-200" },
-            { zone: "🟡 Жёлтая зона", meaning: "Есть признаки снижения", action: "Примените рекомендации из раздела 4", bg: "bg-yellow-50 border-yellow-200" },
-            { zone: "🔴 Красная зона", meaning: "Мотивация значительно снижена", action: "Обратитесь к школьному психологу + рекомендации", bg: "bg-red-50 border-red-200" },
-          ].map((item, i) => (
-            <div key={i} className={`${item.bg} border-2 rounded-xl p-4`}>
-              <p className="font-bold text-gray-800 mb-1">{item.zone}</p>
-              <p className="text-gray-600 text-sm mb-2">{item.meaning}</p>
-              <p className="text-gray-700 text-sm">{item.action}</p>
+            <div className="flex items-center justify-between bg-gray-50 rounded-2xl px-6 py-4">
+              <p className="text-gray-500 text-sm">
+                Отвечено: <span className="font-bold text-gray-800">{quizAnsweredCount}</span> из {quizQuestions.length}
+              </p>
+              <button
+                onClick={() => setQuizSubmitted(true)}
+                disabled={quizAnsweredCount < quizQuestions.length}
+                className={`px-8 py-3 rounded-xl font-bold text-white transition-all ${
+                  quizAnsweredCount === quizQuestions.length
+                    ? "bg-gradient-to-r from-green-400 to-teal-500 hover:opacity-90 shadow-md"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
+              >
+                Узнать результат →
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : quizResult ? (
+          <div className="space-y-6">
+            <div className={`bg-gradient-to-br ${quizResult.bg} rounded-2xl p-8 text-white`}>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="text-5xl">
+                  {quizResult.zone.split(" ")[0]}
+                </div>
+                <div>
+                  <p className="text-white/80 text-sm font-medium uppercase tracking-wide">Ваш результат — {quizScore} из 18 баллов</p>
+                  <p className="font-oswald text-3xl font-bold">{quizResult.title}</p>
+                </div>
+              </div>
+              <p className="text-white/90 text-base leading-relaxed">{quizResult.description}</p>
+            </div>
+
+            <div className="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-sm">
+              <p className="font-oswald text-xl font-bold text-gray-800 mb-4">Что делать прямо сейчас:</p>
+              <ul className="space-y-3">
+                {quizResult.advice.map((tip, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-green-400 to-teal-500 text-white text-xs font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+                    <p className="text-gray-700 text-sm leading-relaxed">{tip}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-3">
+              {quizZones.map((z, i) => (
+                <div key={i} className={`border-2 rounded-xl p-4 ${quizResult === z ? z.light + " border-current" : "bg-gray-50 border-gray-100"}`}>
+                  <p className="font-bold text-sm mb-1">{z.zone}</p>
+                  <p className="text-xs text-gray-500">{z.min}–{z.max} баллов</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <button
+                onClick={handleQuizReset}
+                className="text-sm text-gray-400 hover:text-gray-600 underline transition-colors"
+              >
+                Пройти тест заново
+              </button>
+            </div>
+          </div>
+        ) : null}
       </section>
 
       {/* SECTION 4 — Стратегии */}
